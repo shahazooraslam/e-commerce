@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container">
+     <div class="row flex justify-content-between">
+        <div class="img2 col-lg-5 mt-5">
+            <img src="{{image.image.url}}" class="image col-xs-6 col-sm-12 col-lg-12 mt-3 text-sm-center w-100 h-75" alt="">
+        </div>
+        <div class="productdetails col-lg-5">
+            <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size:50px;">{{image.title}}</h1>
+            <h4>RS-{{image.discountprice}}/-</h4>
+            <small class="text-decoration-line-through text-muted fs-5"><del>RS-{{image.sellingprice}}/-</del></small>
+            <br>
+            <br>
+            <h4>PRODUCT FEAUTURES</h4>
+            <ul class="fs-5" style="font-family: Rajdhani;">
+                <li>{{image.description}}</li>
+            </ul>
+        
+            {% if request.session %}
+            {% if item_already_in_cart %}
+            <a href="/show_cart"><button type="submit" class="d-grip gap-2 btn1 btn btn-danger p-1 m-1 btn-lg text-decoration-none text-white">GO TO Cart</button></a>
+            {% else %}
+            <div class="button-row-flex" style="font-family: Rajdhani;">
+                <form action="/add_to_cart" >
+                {% csrf_token %}
+                <input type="hidden" name="prod_id" value="{{image.id}}" id="prod_id">
+                <button type="submit" class="d-grip gap-2 btn1 btn btn-danger p-1 m-1 btn-lg text-decoration-none text-white">Add to Cart</button>
+                <!-- <button type="submit" class="d-grip gap-2 btn1 btn btn-info p-1 m-1 btn-lg text-decoration-none text-white">Buy Now</button> -->
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+
+        
+        </div>
+
+     </div>
+    </div>
+
+</body>
+</html>
+    
+    
+    <!-- <img src="{{image.image.url}}">
+
+    {{image.description}}
+    {{image.price}} -->

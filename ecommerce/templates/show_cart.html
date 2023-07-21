@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="border rounded p-4 m-4">
+            <p class="display-4 pl-4 ml-4">MY CART</p>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>sr no</th>
+                        <th>image</th>
+                        <th>product name</th>
+                        <th>qty</th>
+                        <th> price</th>
+                        <th></th>
+                        <th> action</th>
+                        <th></th>
+                        <th></th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                    {% for cart in cart %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><img style="height: 80px;" class="rounded-circle" src="{{cart.product.image.url}}" alt=""></td>
+                        <td>{{cart.product.title}}</td>
+                        <td>{{cart.quantity}}</td>
+                        <td>{{cart.price}}</td>
+
+                        <td><input type="button" pid="{{cart.product.id}}" class="minus-cart btn btn-primary" value="-"></td>
+                        <td><span id="quantity">{{cart.quantity}}</span></td>
+                        <td><input type="button" pid="{{cart.product.id}}" class="plus-cart btn btn-primary" value="+"></td>
+                        <td><input type="button" pid="{{cart.product.id}}" class="btn btn-danger btn-sm remove-cart" value="delete"></td>
+                        <!-- THIS IS  A MODEL DEF FUNCTION USED BY PROPERTY -->
+                        <td>{{cart.pricee}}</td>
+                        
+
+
+                      </tr>
+                    {% endfor %}
+                  {{totalamount}}
+                </tbody>
+            </table>
+            <div class="m-3 p-3">
+                <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-into border rounded col-lg-3 float-right">CHECKOUT</a>   
+            </div>
+        </div>
+    </div>
+   <!-- Button trigger modal
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+   -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">CHECKOUT</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/checkout" method="post">
+            {% csrf_token %}
+             <div class="form-group mt-3">
+                <label>NAME</label>
+                <input required type="text" name="name" id="name" class="form-control" placeholder="enter your name">
+             </div>
+
+             <div class="form-group mt-3">
+                <label>ADDRESS</label>
+                <input required type="text" name="address" id="name" class="form-control" placeholder="enter your shipping address">
+             </div>
+
+             <div class="form-group mt-3">
+                <label>MOBILE .NO</label>
+                <input required type="text" name="mobile" id="name" class="form-control" placeholder="enter your mobile number">
+             </div>
+             <input type="submit" class="btn btn-outline-into border rounded col-lg-3 float-right mgt-3 " value="make payment">
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+   
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $('.plus-cart').click(function(){
+        var id=$(this).attr("pid").toString();
+        console.log(id)
+        $.ajax({
+            type:"GET",
+            url:"/plus_cart",
+            data:{
+            prod_id:id
+
+            },
+            success:function(data){
+            console.log(data)
+
+            }
+        })
+  });
+</script>
+<script>
+    $('.minus-cart').click(function(){
+        var id=$(this).attr("pid").toString();
+        console.log(id)
+        $.ajax({
+            type:"GET",
+            url:"/minus_cart",
+            data:{
+            prod_id:id
+
+            },
+            success:function(data){
+            console.log(data)
+
+            }
+        })
+  });
+</script>
+<script>
+    $('.remove-cart').click(function(){
+        var id=$(this).attr("pid").toString();
+        console.log(id)
+        var eml=this
+        $.ajax({
+            type:"GET",
+            url:"/remove_cart",
+            data:{
+            prod_id:id
+
+            },
+            success:function(data){
+            console.log(data)
+            $(mythis).closest("tr").fadeOut()
+
+            }
+        })
+  });
+</script>
+</body>
+</html>
